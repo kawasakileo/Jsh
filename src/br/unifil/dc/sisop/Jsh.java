@@ -28,10 +28,11 @@ public final class Jsh {
     * Funcao principal do Jsh.
     */
     public static void promptTerminal() {
-        while (true) {
+        boolean aux = true;
+        while (aux) {
     		exibirPrompt();
     		ComandoPrompt comandoEntrado = lerComando();
-    		executarComando(comandoEntrado);
+            aux = executarComando(comandoEntrado);
     	}
     }
 
@@ -91,7 +92,8 @@ public final class Jsh {
                 ComandosInternos.mudarDiretorioTrabalho(comando.getArgumentos().get(0));
                 return true;
             default:
-                System.out.println("\n" + "Comando ou programa ao identificado! Segue abaixo a lista de comandos existentes" + "\n" +
+                System.out.println(
+                        "\n" + "Comando ou programa ao identificado! Segue abaixo a lista de comandos existentes" + "\n" +
                         "'relogio' : Informa a data e a hora do sistema" + "\n" +
                         "'la' : Informa a lista de arquivos e pastas existentes no diretorio atual" + "\n" +
                         "'cd' : Cria um novo diretorio com o argumento informado" + "\n" +
