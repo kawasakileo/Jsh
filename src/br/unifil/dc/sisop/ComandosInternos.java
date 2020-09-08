@@ -12,7 +12,7 @@ import java.util.Date;
  * @author Ricardo Inacio Alvares e Silva
  * @version 180823
  */
-public final class ComandosInternos {
+public final class ComandosInternos{
     /**
      * Essa classe não deve ser instanciada.
      */
@@ -26,7 +26,9 @@ public final class ComandosInternos {
     }
 
     public static int escreverListaArquivos() {
-        File userdir = new File(Paths.get("").toAbsolutePath().toString());
+        String diretorioAtual = System.getProperty("user.dir");
+        File userdir = new File(Paths.get(diretorioAtual).toAbsolutePath().toString());
+        System.out.println(userdir);
         File[] arquivos = userdir.listFiles();
 
         for(File arquivo : arquivos){
@@ -39,7 +41,9 @@ public final class ComandosInternos {
     }
 
     public static int criarNovoDiretorio(String nomeDir) {
-        File file = new File(nomeDir);
+        String diretorioAtual = System.getProperty("user.dir");
+        System.out.println(diretorioAtual);
+        File file = new File(diretorioAtual+"\\"+nomeDir);
         if (!file.exists()) {
             if (file.mkdir()) {
                 System.out.println("Diretorio "+"'"+nomeDir+"'"+" criado com sucesso!");
@@ -54,7 +58,8 @@ public final class ComandosInternos {
     }
 
     public static int apagarDiretorio(String nomeDir) {
-        File file = new File(nomeDir);
+        String diretorioAtual = System.getProperty("user.dir");
+        File file = new File(diretorioAtual+"\\"+nomeDir);
         if (!file.exists()) {
             System.out.println("Diretorio nao encontrado!");
         } else {

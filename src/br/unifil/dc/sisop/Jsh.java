@@ -1,5 +1,9 @@
 package br.unifil.dc.sisop;
 
+import java.io.File;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -41,6 +45,7 @@ public final class Jsh {
     * terminal está pronto para receber o próximo comando como entrada.
     */
     public static void exibirPrompt() {
+        String userdir = System.getProperty("user.dir");
         System.out.print(username+"#"+uuid+"@"+userdir+" ");
     }
 
@@ -92,6 +97,7 @@ public final class Jsh {
                 ComandosInternos.mudarDiretorioTrabalho(comando.getArgumentos().get(0));
                 return true;
             default:
+                executarPrograma(comando);
                 System.out.println(
                         "\n" + "Comando ou programa ao identificado! Segue abaixo a lista de comandos existentes" + "\n" +
                         "'relogio' : Informa a data e a hora do sistema" + "\n" +
@@ -104,8 +110,33 @@ public final class Jsh {
     }
 
     public static int executarPrograma(ComandoPrompt comando) {
-        throw new RuntimeException("Método ainda não implementado.");
+        File userdir = new File(Paths.get("").toAbsolutePath().toString());
+        File[] arquivos = userdir.listFiles();
+
+        List<String> finalList = new ArrayList<>();
+
+        for(File arquivo : arquivos){
+            String convertString = arquivo.toString();
+            String trocandoBarras = convertString.replaceAll("\\\\", "/");
+            String[] stringFinal = trocandoBarras.split("/");
+            finalList.add(stringFinal[stringFinal.length-1]);
+        }
+
+        if(finalList.contains(comando)){
+            try{
+                Process p = Runtime.getRuntime().exec(String.valueOf(Paths.get("").toAbsolutePath().toString())+comando);
+                if(p.exitValue()==0){
+                    System.out.println("Programa terminou normalmente");
+                }
+            }catch(Exception e){
+            }
+        } else {
+            return 0;
+        }
+        return 0;
     }
+
+
 
     public static long gerarUUID(){
         long tempo = System.currentTimeMillis();
@@ -118,5 +149,5 @@ public final class Jsh {
 
     private static long uuid = gerarUUID();
     private static String username = System.getProperty("user.name");
-    private static String userdir = System.getProperty("user.dir");
+
 }
