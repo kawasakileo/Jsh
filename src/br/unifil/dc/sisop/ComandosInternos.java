@@ -28,8 +28,12 @@ public final class ComandosInternos {
     public static int escreverListaArquivos() {
         File userdir = new File(Paths.get("").toAbsolutePath().toString());
         File[] arquivos = userdir.listFiles();
+
         for(File arquivo : arquivos){
-            System.out.println(arquivo.toString());
+            String convertString = arquivo.toString();
+            String trocandoBarras = convertString.replaceAll("\\\\", "/");
+            String[] stringFinal = trocandoBarras.split("/");
+            System.out.println(stringFinal[stringFinal.length-1]);
         }
         return 0;
     }
