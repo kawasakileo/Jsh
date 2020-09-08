@@ -1,5 +1,8 @@
 package br.unifil.dc.sisop;
 
+import java.util.Scanner;
+import java.util.UUID;
+
 /**
  * Write a description of class Jsh here.
  *
@@ -37,7 +40,7 @@ public final class Jsh {
     * terminal está pronto para receber o próximo comando como entrada.
     */
     public static void exibirPrompt() {
-        throw new RuntimeException("Método ainda não implementado.");
+        System.out.print(username+"#"+uuid+"@"+userdir+" ");
     }
 
     /**
@@ -51,7 +54,10 @@ public final class Jsh {
     * @return
     */
     public static ComandoPrompt lerComando() {
-        throw new RuntimeException("Método ainda não implementado.");
+        Scanner scanner =  new Scanner(System.in);
+        String line = scanner.nextLine();
+        ComandoPrompt read = new ComandoPrompt(line);
+        return read;
     }
 
     /**
@@ -65,11 +71,50 @@ public final class Jsh {
     * Se nao for nenhuma das situacoes anteriores, exibe uma mensagem de comando ou
     * programa desconhecido.
     */
-    public static void executarComando(ComandoPrompt comando) {
-        throw new RuntimeException("Método ainda não implementado.");
+    public static boolean executarComando(ComandoPrompt comando) {
+        switch (comando.getNome()) {
+            case "encerrar":
+                return false;
+            case "relogio":
+                ComandosInternos.exibirRelogio();
+                return true;
+            case "la":
+                ComandosInternos.escreverListaArquivos();
+                return true;
+            case "cd":
+                ComandosInternos.criarNovoDiretorio(comando.getArgumentos().get(0));
+                return true;
+            case "ad":
+                ComandosInternos.apagarDiretorio(comando.getArgumentos().get(0));
+                return true;
+            case "mdt":
+                ComandosInternos.mudarDiretorioTrabalho(comando.getArgumentos().get(0));
+                return true;
+            default:
+                System.out.println("\n" + "Comando ou programa ao identificado! Segue abaixo a lista de comandos existentes" + "\n" +
+                        "'relogio' : Informa a data e a hora do sistema" + "\n" +
+                        "'la' : Informa a lista de arquivos e pastas existentes no diretorio atual" + "\n" +
+                        "'cd' : Cria um novo diretorio com o argumento informado" + "\n" +
+                        "'ad' : Apaga o diretorio com o argumento informado" + "\n" +
+                        "'mdt' : Muda o diretorio atual para o diretorio do argumento informado" + "\n");
+                return true;
+        }
     }
 
     public static int executarPrograma(ComandoPrompt comando) {
         throw new RuntimeException("Método ainda não implementado.");
     }
+
+    public static long gerarUUID(){
+        long tempo = System.currentTimeMillis();
+        for (int i = 0; i < 1000000; i++) {
+            UUID.randomUUID();
+        }
+        long uuid = System.currentTimeMillis() - tempo;
+        return uuid;
+    }
+
+    private static long uuid = gerarUUID();
+    private static String username = System.getProperty("user.name");
+    private static String userdir = System.getProperty("user.dir");
 }
