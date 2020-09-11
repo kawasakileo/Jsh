@@ -15,14 +15,14 @@ public class ComandoPrompt {
     public ComandoPrompt(String comando) {
         // ESCREVA AQUI SEU CODIGO PARA ESTRUTURAR O COMANDO RECEBIDO DO PROMPT.
         String[] arr;
-        if(comando.indexOf(" ") > 0){
+        if(comando.indexOf(" ") > 0) {
             arr = comando.split(" ");
             nome = arr[0];
             argumentos = new String[arr.length -1];
-            for(int i = 1; i < arr.length; i++){
+            for(int i = 1; i < arr.length; i++) {
                 argumentos[i - 1] = arr[1];
             }
-        }else{
+        } else {
             nome = comando;
             argumentos = new String[1];
         }

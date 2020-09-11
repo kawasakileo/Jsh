@@ -4,7 +4,7 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Write a description of class ComandosInternos here.
@@ -12,73 +12,71 @@ import java.util.Date;
  * @author Ricardo Inacio Alvares e Silva
  * @version 180823
  */
-public final class ComandosInternos{
-    /**
-     * Essa classe não deve ser instanciada.
-     */
+public final class ComandosInternos {
+    /** Essa classe não deve ser instanciada. */
     private ComandosInternos() {}
 
-    public static int exibirRelogio() {
+    public static void exibirRelogio() {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
         System.out.println(dateFormat.format(date));
-        return 0;
     }
 
-    public static int escreverListaArquivos() {
+    public static void escreverListaArquivos() {
         String diretorioAtual = System.getProperty("user.dir");
         File userdir = new File(Paths.get(diretorioAtual).toAbsolutePath().toString());
         System.out.println(userdir);
         File[] arquivos = userdir.listFiles();
 
-        for(File arquivo : arquivos){
+        assert arquivos != null;
+        for (File arquivo : arquivos) {
             String convertString = arquivo.toString();
             String trocandoBarras = convertString.replaceAll("\\\\", "/");
             String[] stringFinal = trocandoBarras.split("/");
-            System.out.println(stringFinal[stringFinal.length-1]);
+            System.out.println(stringFinal[stringFinal.length - 1]);
         }
-        return 0;
     }
 
-    public static int criarNovoDiretorio(String nomeDir) {
-        String diretorioAtual = System.getProperty("user.dir");
-        System.out.println(diretorioAtual);
-        File file = new File(diretorioAtual+"\\"+nomeDir);
-        if (!file.exists()) {
-            if (file.mkdir()) {
-                System.out.println("Diretorio "+"'"+nomeDir+"'"+" criado com sucesso!");
-                return 0;
+    public static void criarNovoDiretorio(List<String> args) {
+        String caminhoCompleto = gerarCaminhoAbsoluto(Optional.of(args.get(0)));
+        new File(caminhoCompleto).mkdir();
+    }
+
+    public static void apagarDiretorio(List<String> args) {
+        String caminhoCompleto = gerarCaminhoAbsoluto(Optional.of(args.get(0)));
+        File dirASerApagado = new File(caminhoCompleto);
+        if ((dirASerApagado.exists()) && (dirASerApagado.isDirectory())) {
+            if (dirASerApagado.delete()) {
+                System.out.println("Deletado com sucesso");
             } else {
-                System.out.println("Falha na criacao do diretorio, verifique se o diretorio ja nao existe!");
-                return 0;
+                List<String> listaArquivos =
+                        Collections.singletonList(dirASerApagado.listFiles().toString());
+                apagarDiretorio(listaArquivos);
             }
+        } else if (!dirASerApagado.exists()) {
+            System.out.println("Esse diretorio não existe </3");
+        } else if (!dirASerApagado.isDirectory()) {
+            System.out.println("Isso não é um diretorio");
         }
-        System.out.println("Diretorio ja existe!");
-        return 0;
     }
 
-    public static int apagarDiretorio(String nomeDir) {
-        String diretorioAtual = System.getProperty("user.dir");
-        File file = new File(diretorioAtual+"\\"+nomeDir);
-        if (!file.exists()) {
-            System.out.println("Diretorio nao encontrado!");
-        } else {
-            file.delete();
-            System.out.println("Diretorio "+"'"+nomeDir+"'"+" apagado!");
-        }
-        return 0;
+    public static String gerarCaminhoAbsoluto(Optional<String> dir) {
+        String caminhoRetorno;
+        String barraDoSistema = System.getProperty("file.separator");
+        String userDir = System.getProperty("user.dir");
+        caminhoRetorno = dir.map(s -> userDir + barraDoSistema + s).orElse(userDir);
+        return caminhoRetorno;
     }
 
-    public static int mudarDiretorioTrabalho(String nomeDir){
+    public static void mudarDiretorioTrabalho(String nomeDir) {
         File directory;
         directory = new File(nomeDir).getAbsoluteFile();
         if (directory.exists()) {
             System.setProperty("user.dir", directory.getAbsolutePath());
-        }else{
+        } else {
             System.out.println("Diretorio nao encontrado!");
-            return 0;
+            return;
         }
         System.out.println("Diretorio alterado com sucesso!");
-        return 0;
     }
 }

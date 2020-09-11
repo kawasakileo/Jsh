@@ -19,10 +19,8 @@ public final class Jsh {
      * Entrada do programa. Provavelmente você não precisará modificar esse método.
      */
     public static void main(String[] args) throws IOException {
-
         promptTerminal();
     }
-
 
     /**
      * Essa classe não deve ser instanciada.
@@ -89,10 +87,10 @@ public final class Jsh {
                 ComandosInternos.escreverListaArquivos();
                 return true;
             case "cd":
-                ComandosInternos.criarNovoDiretorio(comando.getArgumentos().get(0));
+                ComandosInternos.criarNovoDiretorio(comando.getArgumentos());
                 return true;
             case "ad":
-                ComandosInternos.apagarDiretorio(comando.getArgumentos().get(0));
+                ComandosInternos.apagarDiretorio(comando.getArgumentos());
                 return true;
             case "mdt":
                 ComandosInternos.mudarDiretorioTrabalho(comando.getArgumentos().get(0));
@@ -110,40 +108,35 @@ public final class Jsh {
         }
     }
 
-    public static int executarPrograma(ComandoPrompt comando) throws IOException {
+    public static void executarPrograma(ComandoPrompt comando) throws IOException {
         File userdir = new File(Paths.get("").toAbsolutePath().toString());
         File[] arquivos = userdir.listFiles();
 
         List<String> finalList = new ArrayList<>();
 
-        for(File arquivo : arquivos){
+        assert arquivos != null;
+        for(File arquivo : arquivos) {
             String convertString = arquivo.toString();
             String trocandoBarras = convertString.replaceAll("\\\\", "/");
             String[] stringFinal = trocandoBarras.split("/");
             finalList.add(stringFinal[stringFinal.length-1]);
         }
 
-        if(finalList.contains(comando)){
-            String executar = userdir.toString()+"\\"+comando;
-            Process proc = Runtime.getRuntime().exec("rundll32 SHELL32.DLL,ShellExec_RunDLL cmd /c \""+executar+"\"");
-        } else {
-            return 0;
-        }
-        return 0;
+//        if(finalList.contains(comando)) {
+//            String executar = userdir.toString() + "\\" + comando;
+//            Process proc = Runtime.getRuntime().exec("rundll32 SHELL32.DLL,ShellExec_RunDLL cmd /c \""+executar+"\"");
+//        } else {
+//        }
     }
-
-
 
     public static long gerarUUID(){
         long tempo = System.currentTimeMillis();
         for (int i = 0; i < 1000000; i++) {
             UUID.randomUUID();
         }
-        long uuid = System.currentTimeMillis() - tempo;
-        return uuid;
+        return System.currentTimeMillis() - tempo;
     }
 
-    private static long uuid = gerarUUID();
-    private static String username = System.getProperty("user.name");
-
+    private static final long uuid = gerarUUID();
+    private static final String username = System.getProperty("user.name");
 }
