@@ -1,6 +1,7 @@
 package br.unifil.dc.sisop;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public final class Jsh {
     /**
      * Entrada do programa. Provavelmente você não precisará modificar esse método.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         promptTerminal();
     }
@@ -31,7 +32,7 @@ public final class Jsh {
     /**
     * Funcao principal do Jsh.
     */
-    public static void promptTerminal() {
+    public static void promptTerminal() throws IOException {
         boolean aux = true;
         while (aux) {
     		exibirPrompt();
@@ -77,7 +78,7 @@ public final class Jsh {
     * Se nao for nenhuma das situacoes anteriores, exibe uma mensagem de comando ou
     * programa desconhecido.
     */
-    public static boolean executarComando(ComandoPrompt comando) {
+    public static boolean executarComando(ComandoPrompt comando) throws IOException {
         switch (comando.getNome()) {
             case "encerrar":
                 return false;
@@ -109,7 +110,7 @@ public final class Jsh {
         }
     }
 
-    public static int executarPrograma(ComandoPrompt comando) {
+    public static int executarPrograma(ComandoPrompt comando) throws IOException {
         File userdir = new File(Paths.get("").toAbsolutePath().toString());
         File[] arquivos = userdir.listFiles();
 
@@ -123,13 +124,8 @@ public final class Jsh {
         }
 
         if(finalList.contains(comando)){
-            try{
-                Process p = Runtime.getRuntime().exec(String.valueOf(Paths.get("").toAbsolutePath().toString())+comando);
-                if(p.exitValue()==0){
-                    System.out.println("Programa terminou normalmente");
-                }
-            }catch(Exception e){
-            }
+            String executar = userdir.toString()+"\\"+comando;
+            Process proc = Runtime.getRuntime().exec("rundll32 SHELL32.DLL,ShellExec_RunDLL cmd /c \""+executar+"\"");
         } else {
             return 0;
         }
