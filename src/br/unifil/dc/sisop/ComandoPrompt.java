@@ -5,15 +5,21 @@ import java.util.Arrays;
 import java.util.Collections;
 
 /**
- * Write a description of class ComandoPrompt here.
+ * Classe que contém os métodos que controlam os método recebidos pelo
+ * prompt.
  *
- * @author Ricardo Inacio Alvares e Silva
- * @version 180823
+ * @author Leonardo Kawasaki
+ * @author Leonardo Lima
+ * @version 20200913
  */
 public class ComandoPrompt {
 
+    /**
+     * Classe que lê o comando digitado pelo usuário no prompt.
+     *
+     * @param comando String que contém o comando passado pelo usuário no prompt.
+     */
     public ComandoPrompt(String comando) {
-        // ESCREVA AQUI SEU CODIGO PARA ESTRUTURAR O COMANDO RECEBIDO DO PROMPT.
         String[] arr;
         if(comando.indexOf(" ") > 0) {
             arr = comando.split(" ");
