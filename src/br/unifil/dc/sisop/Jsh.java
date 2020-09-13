@@ -39,11 +39,15 @@ public final class Jsh {
     	}
     }
 
+    /**
+     * Método que exibe o nome do usuário, seu uid e seu diretório atual.
+     *
+     * @throws IOException é disparado caso não consiga obter o uid.
+     */
     public static void exibirPrompt() throws IOException {
-        usuario_nome = System.getProperty("user.name");
-        usuario_diretorio = System.getProperty("user.dir");
-        usuario_UID = gerarUUID();
-        System.err.print(usuario_nome + "#" + usuario_UID + ":" + usuario_diretorio + "%" );
+        diretorioAtual = System.getProperty("user.dir");
+        uidUsuario = gerarUUID();
+        System.err.print(nomeUsuario + "#" + uidUsuario + ":" + diretorioAtual + "%" );
     }
 
     /**
@@ -54,7 +58,7 @@ public final class Jsh {
     * que o usuario pressione a tecla <ENTER>, ou seja, ate que seja lido o caractere
     * EOL (End Of Line).
     *
-    * @return
+    * @return retorna uma nova instância de ComandoPrompt
     */
     public static ComandoPrompt lerComando() {
         Scanner scanner =  new Scanner(System.in);
@@ -127,13 +131,13 @@ public final class Jsh {
     }
 
     /**
-     * Método que obtém o UID do usuario
+     * Método que obtém o UID do usuario.
      * @return retorna um int com o valor obtido.
      */
     public static int gerarUUID() throws IOException {
         int uid;
 
-        String comando = "id -u " + username;
+        String comando = "id -u " + nomeUsuario;
         Process comandoUID = Runtime.getRuntime().exec(comando);
         InputStream saidaProcesso = comandoUID.getInputStream();
 
@@ -143,8 +147,7 @@ public final class Jsh {
         return uid;
     }
 
-    public static String usuario_nome;
-    public static String usuario_diretorio;
-    public static int usuario_UID;
-    private static final String username = System.getProperty("user.name");
+    public static int uidUsuario;
+    public static String diretorioAtual;
+    private static final String nomeUsuario = System.getProperty("user.name");
 }
