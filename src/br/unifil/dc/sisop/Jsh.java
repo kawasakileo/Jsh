@@ -2,19 +2,19 @@ package br.unifil.dc.sisop;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.UUID;
+import java.util.*;
 
 /**
- * Write a description of class Jsh here.
+ * A classe Jsh é a classe principal do projeto e contém os métodos que
+ * compõem a interface do terminal e controlam sua execução.
  *
- * @author Ricardo Inacio Alvares e Silva
- * @version 180823
+ * @author Leonardo Kawasaki e Leonardo Lima
+ * @version 200913
  */
 public final class Jsh {
+
     /**
      * Entrada do programa. Provavelmente você não precisará modificar esse método.
      */
@@ -39,13 +39,11 @@ public final class Jsh {
     	}
     }
 
-    /**
-    * Escreve o prompt na saida padrao para o usuário reconhecê-lo e saber que o
-    * terminal está pronto para receber o próximo comando como entrada.
-    */
-    public static void exibirPrompt() {
-        String userdir = System.getProperty("user.dir");
-        System.out.print(username+"#"+uuid+"@"+userdir+" ");
+    public static void exibirPrompt() throws IOException {
+        usuario_nome = System.getProperty("user.name");
+        usuario_diretorio = System.getProperty("user.dir");
+        usuario_UID = gerarUUID();
+        System.err.print(usuario_nome + "#" + usuario_UID + ":" + usuario_diretorio + "%" );
     }
 
     /**
@@ -61,8 +59,7 @@ public final class Jsh {
     public static ComandoPrompt lerComando() {
         Scanner scanner =  new Scanner(System.in);
         String line = scanner.nextLine();
-        ComandoPrompt read = new ComandoPrompt(line);
-        return read;
+        return new ComandoPrompt(line);
     }
 
     /**
@@ -129,14 +126,25 @@ public final class Jsh {
 //        }
     }
 
-    public static long gerarUUID(){
-        long tempo = System.currentTimeMillis();
-        for (int i = 0; i < 1000000; i++) {
-            UUID.randomUUID();
-        }
-        return System.currentTimeMillis() - tempo;
+    /**
+     * Método que obtém o UID do usuario
+     * @return retorna um int com o valor obtido.
+     */
+    public static int gerarUUID() throws IOException {
+        int uid;
+
+        String comando = "id -u " + username;
+        Process comandoUID = Runtime.getRuntime().exec(comando);
+        InputStream saidaProcesso = comandoUID.getInputStream();
+
+        byte[] arrSaida = saidaProcesso.readAllBytes();
+        uid = arrSaida[0];
+
+        return uid;
     }
 
-    private static final long uuid = gerarUUID();
+    public static String usuario_nome;
+    public static String usuario_diretorio;
+    public static int usuario_UID;
     private static final String username = System.getProperty("user.name");
 }

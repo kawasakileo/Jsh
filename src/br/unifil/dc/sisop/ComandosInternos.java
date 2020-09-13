@@ -47,16 +47,16 @@ public final class ComandosInternos {
         File dirASerApagado = new File(caminhoCompleto);
         if ((dirASerApagado.exists()) && (dirASerApagado.isDirectory())) {
             if (dirASerApagado.delete()) {
-                System.out.println("Deletado com sucesso");
+                System.out.println("Deletado com sucesso.");
             } else {
                 List<String> listaArquivos =
                         Collections.singletonList(dirASerApagado.listFiles().toString());
                 apagarDiretorio(listaArquivos);
             }
         } else if (!dirASerApagado.exists()) {
-            System.out.println("Esse diretorio não existe </3");
+            System.out.println("Diretório não encontrado.");
         } else if (!dirASerApagado.isDirectory()) {
-            System.out.println("Isso não é um diretorio");
+            System.out.println("Isso não é um diretorio.");
         }
     }
 
@@ -74,9 +74,9 @@ public final class ComandosInternos {
         if (directory.exists()) {
             System.setProperty("user.dir", directory.getAbsolutePath());
         } else {
-            System.out.println("Diretorio nao encontrado!");
+            System.out.println("Diretório nao encontrado.");
             return;
         }
-        System.out.println("Diretorio alterado com sucesso!");
+        System.out.println("Diretório atual alterado.");
     }
 }
