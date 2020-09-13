@@ -10,8 +10,9 @@ import java.util.*;
  * A classe Jsh é a classe principal do projeto e contém os métodos que
  * compõem a interface do terminal e controlam sua execução.
  *
- * @author Leonardo Kawasaki e Leonardo Lima
- * @version 200913
+ * @author Leonardo Kawasaki
+ * @author Leonardo Lima
+ * @version 20200913
  */
 public final class Jsh {
 
@@ -40,7 +41,7 @@ public final class Jsh {
     }
 
     /**
-     * Método que exibe o nome do usuário, seu uid e seu diretório atual.
+     * Método sem retorno que exibe o nome do usuário, seu uid e seu diretório atual.
      *
      * @throws IOException é disparado caso não consiga obter o uid.
      */
@@ -131,7 +132,8 @@ public final class Jsh {
     }
 
     /**
-     * Método que obtém o UID do usuario.
+     * Método que obtém o UID do usuario a partir do processo.
+     *
      * @return retorna um int com o valor obtido.
      */
     public static int gerarUUID() throws IOException {

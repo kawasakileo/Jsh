@@ -7,21 +7,30 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Write a description of class ComandosInternos here.
+ * Classe que contém os métodos com os comandos fundamentais do prompt.
  *
- * @author Ricardo Inacio Alvares e Silva
- * @version 180823
+ * @author Leonardo Kawasaki
+ * @author Leonardo Lima
+ * @version 20200913
  */
 public final class ComandosInternos {
+
     /** Essa classe não deve ser instanciada. */
     private ComandosInternos() {}
 
+    /**
+     * Método sem retorno que exibe o relógio com a data e horário atual.
+     */
     public static void exibirRelogio() {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
         System.out.println(dateFormat.format(date));
     }
 
+    /**
+     * Método sem retorno que exibe a lista de arquivos que estão contidos
+     * no diretório atual.
+     */
     public static void escreverListaArquivos() {
         String diretorioAtual = System.getProperty("user.dir");
         File userdir = new File(Paths.get(diretorioAtual).toAbsolutePath().toString());
@@ -37,11 +46,23 @@ public final class ComandosInternos {
         }
     }
 
+    /**
+     * Método sem retorno que cria um novo diretório na localização
+     * atual do usuário.
+     *
+     * @param args lista de String que contém o caminho.
+     */
     public static void criarNovoDiretorio(List<String> args) {
         String caminhoCompleto = gerarCaminhoAbsoluto(Optional.of(args.get(0)));
         new File(caminhoCompleto).mkdir();
     }
 
+    /**
+     * Método sem retorno que apaga determinado diretório contido na
+     * localização atual do usuário.
+     *
+     * @param args lista de String que contém o caminho.
+     */
     public static void apagarDiretorio(List<String> args) {
         String caminhoCompleto = gerarCaminhoAbsoluto(Optional.of(args.get(0)));
         File dirASerApagado = new File(caminhoCompleto);
@@ -60,6 +81,12 @@ public final class ComandosInternos {
         }
     }
 
+    /**
+     * Método auxiliar que gera o caminho absoluto.
+     *
+     * @param dir Optional, que contḿe o caminho, exista.
+     * @return retorna uma String que contém valor do caminho absoluto.
+     */
     public static String gerarCaminhoAbsoluto(Optional<String> dir) {
         String caminhoRetorno;
         String barraDoSistema = System.getProperty("file.separator");
@@ -68,6 +95,13 @@ public final class ComandosInternos {
         return caminhoRetorno;
     }
 
+    /**
+     * Método sem retorno que faz a mudança do diretório, a partir da
+     * localização atual do usuário.
+     *
+     * @param nomeDir String que contém o nome do diretório para qual o
+     * usuário será direcionado.
+     */
     public static void mudarDiretorioTrabalho(String nomeDir) {
         File directory;
         directory = new File(nomeDir).getAbsoluteFile();
